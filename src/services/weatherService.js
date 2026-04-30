@@ -1,17 +1,10 @@
+
+
 /**
  * Weather service for OpenWeatherMap API integration
  */
 
-const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-const AQICN_API_TOKEN = import.meta.env.VITE_AQICN_API_TOKEN;
 const DEFAULT_CITY = import.meta.env.VITE_DEFAULT_CITY || "London";
-
-// Check if API keys are set (not placeholder values)
-const isOpenWeatherKeyValid =
-  OPENWEATHER_API_KEY &&
-  OPENWEATHER_API_KEY !== "your_openweather_api_key_here";
-const isAQICNTokenValid =
-  AQICN_API_TOKEN && AQICN_API_TOKEN !== "your_aqicn_api_token_here";
 
 /**
  * Fetch current weather data for a city
@@ -20,14 +13,8 @@ const isAQICNTokenValid =
  */
 
 export const fetchCurrentWeather = async (city = DEFAULT_CITY) => {
-  if (!isOpenWeatherKeyValid) {
-    throw new Error("OpenWeather API key missing");
-  }
-
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(
-      city,
-    )}&units=metric&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`,
+    `/api/weather/current?city=${encodeURIComponent(city)}`
   );
 
   if (!response.ok) {
@@ -44,12 +31,8 @@ export const fetchCurrentWeather = async (city = DEFAULT_CITY) => {
  * @returns {Promise} Weather data
  */
 export const fetchCurrentWeatherByCoords = async (lat, lon) => {
-  if (!isOpenWeatherKeyValid) {
-    throw new Error("OpenWeather API key missing");
-  }
-
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`,
+    `/api/weather/current?lat=${lat}&lon=${lon}`
   );
 
   if (!response.ok) {
@@ -66,14 +49,8 @@ export const fetchCurrentWeatherByCoords = async (lat, lon) => {
  */
 
 export const fetchWeatherForecast = async (city = DEFAULT_CITY) => {
-  if (!isOpenWeatherKeyValid) {
-    throw new Error("OpenWeather API key missing");
-  }
-
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?q=${encodeURIComponent(
-      city,
-    )}&units=metric&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`,
+    `/api/weather/forecast?city=${encodeURIComponent(city)}`
   );
 
   if (!response.ok) {
@@ -90,12 +67,8 @@ export const fetchWeatherForecast = async (city = DEFAULT_CITY) => {
  * @returns {Promise} Forecast data
  */
 export const fetchWeatherForecastByCoords = async (lat, lon) => {
-  if (!isOpenWeatherKeyValid) {
-    throw new Error("OpenWeather API key missing");
-  }
-
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${import.meta.env.VITE_OPENWEATHER_API_KEY}`,
+    `/api/weather/forecast?lat=${lat}&lon=${lon}`
   );
 
   if (!response.ok) {
@@ -111,12 +84,8 @@ export const fetchWeatherForecastByCoords = async (lat, lon) => {
  * @returns {Promise} AQI data
  */
 export const fetchAirQualityByCoords = async (lat, lon) => {
-  if (!isAQICNTokenValid) {
-    throw new Error("AQICN API token missing");
-  }
-
   const response = await fetch(
-    `https://api.waqi.info/feed/geo:${lat};${lon}/?token=${AQICN_API_TOKEN}`,
+    `/api/aqi?lat=${lat}&lon=${lon}`
   );
 
   const data = await response.json();
