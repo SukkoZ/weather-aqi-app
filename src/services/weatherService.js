@@ -1,20 +1,21 @@
 
 
+
 /**
  * Weather service for OpenWeatherMap API integration
  */
 
 const DEFAULT_CITY = import.meta.env.VITE_DEFAULT_CITY || "London";
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 /**
  * Fetch current weather data for a city
  * @param {string} city - City name
  * @returns {Promise} Weather data
  */
-
 export const fetchCurrentWeather = async (city = DEFAULT_CITY) => {
   const response = await fetch(
-    `/api/weather/current?city=${encodeURIComponent(city)}`
+    `${API_URL}/api/weather/current?city=${encodeURIComponent(city)}`
   );
 
   if (!response.ok) {
@@ -32,7 +33,7 @@ export const fetchCurrentWeather = async (city = DEFAULT_CITY) => {
  */
 export const fetchCurrentWeatherByCoords = async (lat, lon) => {
   const response = await fetch(
-    `/api/weather/current?lat=${lat}&lon=${lon}`
+    `${API_URL}/api/weather/current?lat=${lat}&lon=${lon}`
   );
 
   if (!response.ok) {
@@ -47,10 +48,9 @@ export const fetchCurrentWeatherByCoords = async (lat, lon) => {
  * @param {string} city - City name
  * @returns {Promise} Forecast data
  */
-
 export const fetchWeatherForecast = async (city = DEFAULT_CITY) => {
   const response = await fetch(
-    `/api/weather/forecast?city=${encodeURIComponent(city)}`
+    `${API_URL}/api/weather/forecast?city=${encodeURIComponent(city)}`
   );
 
   if (!response.ok) {
@@ -68,7 +68,7 @@ export const fetchWeatherForecast = async (city = DEFAULT_CITY) => {
  */
 export const fetchWeatherForecastByCoords = async (lat, lon) => {
   const response = await fetch(
-    `/api/weather/forecast?lat=${lat}&lon=${lon}`
+    `${API_URL}/api/weather/forecast?lat=${lat}&lon=${lon}`
   );
 
   if (!response.ok) {
@@ -80,12 +80,13 @@ export const fetchWeatherForecastByCoords = async (lat, lon) => {
 
 /**
  * Fetch Air Quality Index (AQI) for a city
- * @param {string} city - City name
+ * @param {number} lat - Latitude
+ * @param {number} lon - Longitude
  * @returns {Promise} AQI data
  */
 export const fetchAirQualityByCoords = async (lat, lon) => {
   const response = await fetch(
-    `/api/aqi?lat=${lat}&lon=${lon}`
+    `${API_URL}/api/aqi?lat=${lat}&lon=${lon}`
   );
 
   const data = await response.json();
@@ -96,6 +97,7 @@ export const fetchAirQualityByCoords = async (lat, lon) => {
 
   return data.data;
 };
+
 /**
  * Process forecast data for chart display (group by day)
  * @param {Array} forecastList - List of forecast items from API
